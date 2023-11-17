@@ -4,7 +4,8 @@ const addRestaurant = async (req, res) => {
     try {
         const object = req.body
         const response = await (await RestaurantList.create(object)).toJSON()
-        if (response?.dataValues?.id) {
+        console.log(response);
+        if (response.id) {
             res.status(200).json({message: "Restaurant created"})
         } else {
             res.status(500).json({message: "Error while creating Restaurant"})
@@ -17,6 +18,7 @@ const addRestaurant = async (req, res) => {
 const getRestaurant = async (req, res) => {
     try {
         const response = (await RestaurantList.findAll()).map(item => item.dataValues)
+        console.log(response);
         res.status(200).json({result: response})
     } catch (err) {
         res.status(500).json({message: err.message})
@@ -25,7 +27,7 @@ const getRestaurant = async (req, res) => {
 
 const deleteRestaurant = async (req, res) => {
     try {
-        const { id } = req.body
+        const { id } = req.params
         const response = await RestaurantList.destroy({ where: { id: id } })
         if (response) {
             res.status(200).json({message: "Deleted"})

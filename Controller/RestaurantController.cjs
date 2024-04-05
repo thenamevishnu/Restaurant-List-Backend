@@ -10,6 +10,7 @@ const addRestaurant = async (req, res) => {
             res.status(500).json({message: "Error while creating Restaurant"})
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json({message: err.message})
     }
 }

@@ -5,22 +5,21 @@ const addRestaurant = async (req, res) => {
         const object = req.body
         const response = await (await RestaurantList.create(object)).toJSON()
         if (response.id) {
-            res.status(200).json({message: "Restaurant created", newRecord: response})
+            res.status(200).send({status: "OK", message: "Restaurant created", newRecord: response})
         } else {
-            res.status(500).json({message: "Error while creating Restaurant"})
+            res.status(500).send({message: "Error while creating Restaurant"})
         }
     } catch (err) {
-        console.log(err);
-        res.status(500).json({message: err.message})
+        res.status(500).send({message: err.message})
     }
 }
 
 const getRestaurant = async (req, res) => {
     try {
         const response = (await RestaurantList.findAll()).map(item => item.dataValues)
-        res.status(200).json({result: response})
+        res.status(200).send({status: "OK", result: response})
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -29,12 +28,12 @@ const deleteRestaurant = async (req, res) => {
         const { id } = req.params
         const response = await RestaurantList.destroy({ where: { id: id } })
         if (response) {
-            res.status(200).json({message: "Deleted"})
+            res.status(200).send({status: "OK", message: "Deleted"})
         } else {
-            res.status(404).json({message: "Record not found"})
+            res.status(404).send({message: "Record not found"})
         }
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).send({message: err.message})
     }
 }
 
@@ -54,13 +53,13 @@ const updateRestaurant = async (req, res) => {
                 }
         })
         if (response[0]) {
-            const list = await (await RestaurantList.findAll()).map(item => item.dataValues)
-            res.status(200).json({message: "Updated", newList: list})
+            const list = (await RestaurantList.findAll()).map(item => item.dataValues)
+            res.status(200).send({status: "OK", message: "Updated", newList: list})
         } else {
-            res.status(404).json({message: "Record not found"})
+            res.status(404).send({message: "Record not found"})
         }
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).send({message: err.message})
     }
 }
 
